@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Regras de Polo Aquático 2026/2027</title>
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --primary-dark: #0c2461;
+            --accent: #38ada9;
+            --danger: #e55039;
+            --warning: #f6b93b;
+            --success: #78e08f;
+            --light: #f8f9fa;
+            --dark: #1e272e;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #eef2f5;
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Responsive Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header h1 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        @media(min-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            nav { width: auto; }
+        }
+
+        nav button {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        nav button:hover, nav button.active {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        /* Container & Cards */
+        .container {
+            max-width: 900px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .card { padding: 2rem; }
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        /* Buttons & Forms */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        @media(min-width: 600px) {
+            .btn { width: auto; }
+        }
+
+        .btn:hover { background-color: var(--primary-dark); }
+        .btn-danger { background-color: var(--danger); }
+        .btn-success { background-color: #2ed573; }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        /* Quiz Layout */
+        .timer-bar {
+            position: sticky;
+            top: 60px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: bold;
+            z-index: 900;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .question-box {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1.2rem 0;
+        }
+
+        .question-box:last-child { border-bottom: none; }
+
+        .question-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            list-style: none;
+        }
+
+        .options-list li {
+            margin-bottom: 0.6rem;
+        }
+
+        .options-list label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .options-list label:hover {
+            background: #e9fac8;
+        }
+
+        .options-list input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        /* Responsive Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            min-width: 500px;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary-dark);
+        }
+
+        .badge {
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+        }
+
+        .badge-success { background-color: #2ed573; }
+        .badge-danger { background-color: var(--danger); }
+
+        .hidden { display: none !important; }
+
+        .alert {
+            padding: 1rem;
+            background: #e1f5fe;
+            border-left: 5px solid var(--primary);
+            border-radius: 4px;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <h1>Polo Aquático - Regras 2026/2027</h1>
+            <nav>
+                <button id="nav-login" class="active" onclick="switchTab('login')">Acesso</button>
+                <button id="nav-rules" onclick="switchTab('rules')">Regras & Critérios</button>
+                <button id="nav-admin" onclick="switchTab('admin')">Admin</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- LOGIN / DASHBOARD -->
+        <div id="tab-login" class="card">
+            <div id="login-form-box">
+                <h2>Acesso Individual</h2>
+                <p style="margin-bottom: 1.2rem; color: #666; font-size: 0.95rem;">
+                    Introduza o seu nome e PIN pessoal para aceder ao seu teste.
+                </p>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Nome Completo:</label>
+                        <input type="text" id="user-name" required placeholder="Ex: João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>PIN Pessoal (4 dígitos):</label>
+                        <input type="password" id="user-pin" required placeholder="Ex: 1234" maxlength="6">
+                    </div>
+                    <button type="submit" class="btn">Entrar na Plataforma</button>
+                </form>
+            </div>
+
+            <div id="dashboard-box" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+                    <h2>Olá, <span id="dash-user-name"></span></h2>
+                    <button class="btn btn-danger" onclick="logout()" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Sair</button>
+                </div>
+
+                <div class="alert">
+                    <strong>Premissas do Teste:</strong>
+                    <ul style="margin-left: 1.2rem; margin-top: 0.5rem;">
+                        <li>Nota de Aprovação: <strong>75%</strong>.</li>
+                        <li>Duração máxima: <strong>1 Hora (60 min)</strong>.</li>
+                        <li>Limite de reprovações: <strong>2 Chumbos no máximo</strong>.</li>
+                        <li><strong>Aviso:</strong> Se saíres ou atualizares a página com o teste ativo, a tentativa conta como 0% (Abandono).</li>
+                        <li>Respostas incompletas contam como **erradas**.</li>
+                    </ul>
+                </div>
+
+                <h3>Histórico Pessoal</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Teste</th>
+                                <th>Nota</th>
+                                <th>Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-history-table"></tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;" id="start-test-container"></div>
+            </div>
+        </div>
+
+        <!-- TESTE ATIVO -->
+        <div id="tab-quiz" class="card hidden">
+            <div class="timer-bar">
+                <span>Teste de Regras</span>
+                <span>Tempo: <span id="timer-display">60:00</span></span>
+            </div>
+
+            <form id="quiz-form" onsubmit="submitQuiz(event)">
+                <div id="questions-container"></div>
+                <div style="margin-top: 2rem; text-align: right;">
+                    <button type="submit" class="btn btn-success">Submeter Respostas</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- REGRAS & CRITÉRIOS -->
+        <div id="tab-rules" class="card hidden">
+            <h2>Regras Oficiais & Critérios 2026-2027</h2>
+            <div id="rules-content">
+                <div class="alert">
+                    <strong>Base Normativa:</strong> World Aquatics - Competition Regulations (18 de Fevereiro de 2026).
+                </div>
+                <h4 style="color: var(--primary-dark); margin-top: 1rem;">1. Duração da Exclusão e Cronómetro</h4>
+                <p style="font-size: 0.95rem; margin-top: 0.3rem;">O tempo de exclusão é de 18 segundos de jogo efetivo.</p>
+                <h4 style="color: var(--primary-dark); margin-top: 1rem;">2. Mão na Bola</h4>
+                <p style="font-size: 0.95rem; margin-top: 0.3rem;">Tocar a bola com duas mãos simultaneamente fora da posição de guarda-redes na área dos 6m defensiva é sancionado com falta de penalidade.</p>
+            </div>
+        </div>
+
+        <!-- PAINEL ADMIN -->
+        <div id="tab-admin" class="card hidden">
+            <h2>Painel de Gestão (Administrador)</h2>
+            <div id="admin-login-box">
+                <div class="form-group" style="max-width: 300px;">
+                    <label>Password Master:</label>
+                    <input type="password" id="admin-pass" placeholder="Password">
+                </div>
+                <button class="btn" onclick="checkAdminPass()">Aceder ao Painel</button>
+            </div>
+
+            <div id="admin-content-box" class="hidden">
+                <h3>Resultados de Todos os Árbitros</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Oficial</th>
+                                <th>Tentativas</th>
+                                <th>Chumbos</th>
+                                <th>Última Nota</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // BANCO DE DADOS DOS TESTES A, B, C, D (Amostra Funcional Integrada)
+        const testsBD = {
+            'A': [
+                { id: 1, title: '1. A goal may be scored:', options: ['From a penalty throw.', 'From an immediate shot from a goal throw.', 'From a goal throw only by a player who visibly puts the ball into play before to shoot.', 'By a player who visibly puts the ball into play when restarting play inside 6 metres after an injury.'], correct: [0, 1] },
+                { id: 2, title: '2. During play, attacking player No. 4 white is 7 metres from opponents goal while passing the ball to No. 7 white. Defending player No. 2 blue intercepts the ball blocking the ball with two hands. What decision should the referee make?', options: ['Player No. 2 blue is excluded for 18 seconds.', 'Ordinary foul in favor of white team.', 'A free throw is awarded to white team.', 'A personal foul is recorded against player No. 2 blue.'], correct: [0, 2, 3] }
+            ],
+            'B': [
+                { id: 1, title: '1. A goal cannot be scored:', options: ['From an immediate shot on a free throw taken by a player outside 6 metres restarting after a goal.', 'From an immediate shot from a goal throw.', 'By a player who visibly puts the ball into play from a corner throw after replacement of a cap.', 'At any restart of the game, after at least two field players intentionally play the ball.'], correct: [0] },
+                { id: 2, title: '2. Defender No. 8 blue steals the ball and swims towards opponents goal holding the ball under water between legs to hide it. What decision should the referee make?', options: ['Award an exclusion foul against player No. 8 blue.', 'Award an ordinary foul in favor of white team.', 'No foul, as no opponent tackled the player.', 'A penalty throw is awarded in favor of white team.'], correct: [1] }
+            ],
+            'C': [
+                { id: 1, title: '1. White team player No. 7 leaves the field of play standing and walking on foot on the side of the pool while blue team is in possession. What decision should the referee make?', options: ['Player No. 7 white is excluded for the remainder of the game.', 'A penalty throw is awarded in favor of blue team.', 'Exclusion foul against player No. 7 white.', 'No foul. Leave to play.'], correct: [0] },
+                { id: 2, title: '2. Excluded player No. 5 blue enters flying substitution area properly. When his team takes possession, re-enters through flying substitution area. Decision?', options: ['An ordinary foul is awarded in favor of white team.', 'A penalty throw is awarded in favor of white team.', 'Player No. 5 blue is excluded for the remainder of the game.', 'No foul, as the player used a designated substitution area.'], correct: [1] }
+            ],
+            'D': [
+                { id: 1, title: '1. Player No. 10 white enters the goal area while the ball is flying and holds the ball before shooting and scoring. Decision?', options: ['Ordinary foul in favor of blue team.', 'Goal is valid.', 'Goal is valid and shot clock restarts from 28 seconds.', 'Exclusion foul against player No. 10 white.'], correct: [0] },
+                { id: 2, title: '2. Attacking player visibly puts the ball into play inside 6m and swims outside 6m before shooting and scoring. Decision?', options: ['Disallow goal.', 'Allow the goal.', 'Allow goal only if second player touched.', 'Disallow goal and award free throw.'], correct: [1] }
+            ]
+        };
+
+        let currentUser = null;
+        let activeTimer = null;
+        let timeRemaining = 3600;
+
+        function getDB() { return JSON.parse(localStorage.getItem('polo_db_v2') || '{}'); }
+        function saveDB(db) { localStorage.setItem('polo_db_v2', JSON.stringify(db)); }
+
+        function switchTab(tabId) {
+            ['login', 'quiz', 'rules', 'admin'].forEach(id => {
+                document.getElementById('tab-' + id).classList.add('hidden');
+                let btn = document.getElementById('nav-' + id);
+                if (btn) btn.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            let activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('user-name').value.trim();
+            const pin = document.getElementById('user-pin').value.trim();
+            if (!name || !pin) return;
+
+            let db = getDB();
+            let userId = name.toLowerCase().replace(/\s+/g, '_');
+
+            if (!db[userId]) {
+                db[userId] = { name: name, pin: pin, fails: 0, history: [], activeQuiz: null };
+                saveDB(db);
+            } else if (db[userId].pin !== pin) {
+                alert('PIN incorreto!');
+                return;
+            }
+
+            currentUser = userId;
+            loadDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            clearInterval(activeTimer);
+            document.getElementById('login-form-box').classList.remove('hidden');
+            document.getElementById('dashboard-box').classList.add('hidden');
+        }
+
+        function loadDashboard() {
+            let db = getDB();
+            let user = db[currentUser];
+            document.getElementById('login-form-box').classList.add('hidden');
+            document.getElementById('dashboard-box').classList.remove('hidden');
+            document.getElementById('dash-user-name').innerText = user.name;
+
+            let tbody = document.getElementById('user-history-table');
+            tbody.innerHTML = '';
+
+            if (user.history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Sem testes efetuados.</td></tr>';
+            } else {
+                user.history.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.date}</td>
+                            <td>Teste ${item.testKey}</td>
+                            <td>${item.score}%</td>
+                            <td><span class="badge ${item.status === 'Aprovado' ? 'badge-success' : 'badge-danger'}">${item.status}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            let container = document.getElementById('start-test-container');
+            if (user.fails >= 2) {
+                container.innerHTML = '<div class="alert badge-danger" style="color:white; text-align:center;">Bloqueado: Atingiu o limite de 2 reprovações.</div>';
+            } else if (user.history.some(h => h.status === 'Aprovado')) {
+                container.innerHTML = '<div class="alert badge-success" style="color:white; text-align:center;">Aprovado no Teste 2026/2027!</div>';
+            } else {
+                container.innerHTML = `<button class="btn btn-success" onclick="startNewTest()">Iniciar Teste de Regras</button>`;
+            }
+        }
+
+        function startNewTest() {
+            let db = getDB();
+            let user = db[currentUser];
+            const allTests = ['A', 'B', 'C', 'D'];
+            const doneTests = user.history.map(h => h.testKey);
+            let available = allTests.filter(t => !doneTests.includes(t));
+            if (available.length === 0) available = allTests;
+
+            const selected = available[Math.floor(Math.random() * available.length)];
+            user.activeQuiz = { testKey: selected, startTime: new Date().getTime() };
+            saveDB(db);
+            renderQuiz(selected);
+        }
+
+        function renderQuiz(testKey) {
+            switchTab('quiz');
+            let questions = testsBD[testKey];
+            let container = document.getElementById('questions-container');
+            container.innerHTML = `<h3>Teste de Regras - Tipo ${testKey}</h3>`;
+
+            questions.forEach(q => {
+                let options = q.options.map((opt, i) => `
+                    <li>
+                        <label>
+                            <input type="checkbox" name="q_${q.id}" value="${i}">
+                            <span>${['a)', 'b)', 'c)', 'd)'][i]} ${opt}</span>
+                        </label>
+                    </li>
+                `).join('');
+
+                container.innerHTML += `
+                    <div class="question-box">
+                        <div class="question-title">${q.title}</div>
+                        <ul class="options-list">${options}</ul>
+                    </div>
+                `;
+            });
+
+            timeRemaining = 3600;
+            clearInterval(activeTimer);
+            activeTimer = setInterval(() => {
+                timeRemaining--;
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                document.getElementById('timer-display').innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                if (timeRemaining <= 0) submitQuiz(new Event('submit'));
+            }, 1000);
+        }
+
+        function submitQuiz(e) {
+            e.preventDefault();
+            clearInterval(activeTimer);
+            let db = getDB();
+            let user = db[currentUser];
+            let questions = testsBD[user.activeQuiz.testKey];
+
+            let correctCount = 0;
+            questions.forEach(q => {
+                let selected = Array.from(document.querySelectorAll(`input[name="q_${q.id}"]:checked`)).map(cb => parseInt(cb.value));
+                if (q.correct.length === selected.length && q.correct.every(v => selected.includes(v))) {
+                    correctCount++;
+                }
+            });
+
+            let score = Math.round((correctCount / questions.length) * 100);
+            let isPassed = score >= 75;
+
+            user.history.push({
+                date: new Date().toLocaleDateString('pt-PT'),
+                testKey: user.activeQuiz.testKey,
+                score: score,
+                status: isPassed ? 'Aprovado' : 'Reprovado'
+            });
+
+            if (!isPassed) user.fails += 1;
+            user.activeQuiz = null;
+            saveDB(db);
+
+            alert(`Resultado: ${score}%\nEstado: ${isPassed ? 'Aprovado' : 'Reprovado'}`);
+            switchTab('login');
+            loadDashboard();
+        }
+
+        function checkAdminPass() {
+            if (document.getElementById('admin-pass').value === 'admin123') {
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-content-box').classList.remove('hidden');
+                let db = getDB();
+                let tbody = document.getElementById('admin-table-body');
+                tbody.innerHTML = '';
+                Object.keys(db).forEach(k => {
+                    let u = db[k];
+                    let last = u.history.length > 0 ? u.history[u.history.length - 1].score + '%' : 'N/A';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${u.name}</td>
+                            <td>${u.history.length}</td>
+                            <td>${u.fails}</td>
+                            <td>${last}</td>
+                            <td><span class="badge ${u.fails >= 2 ? 'badge-danger' : 'badge-success'}">${u.fails >= 2 ? 'Bloqueado' : 'Ativo'}</span></td>
+                        </tr>
+                    `;
+                });
+            } else {
+                alert('Password Errada!');
+            }
+        }
+    </script>
+</body>
+</html>
